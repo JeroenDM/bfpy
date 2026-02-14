@@ -29,30 +29,24 @@ class State:
         self.dptr = 0  # data pointer into 'self.tape'
         self.tape = [0] * 1000 # TODO handle dynamic size
 
-def ensure_tape(s : State):
-    if s.dptr >= len(s.tape):
-        s.tape.extend([0] * (s.dptr - len(s.tape) + 1))
-
-def validate(s : State):
-    if s.dptr < 0:
-        raise RuntimeError("Cannot move data pointer below 0.")
-
-def step(s : State, program):
-    out = ""
+def step(s : State, program, io):
     cmd = program[s.iptr]
     if cmd == ">":
         s.dptr += 1
+        if s.dptr >= len(s.tape):
+            s.tape.append(0)
     elif cmd == "<":
         s.dptr -= 1
+        if s.dptr < 0:
+            raise RuntimeError("Cannot move data pointer below 0.")
     elif cmd == "+":
         s.tape[s.dptr] = (s.tape[s.dptr] + 1) % 256
     elif cmd == "-":
         s.tape[s.dptr] = (s.tape[s.dptr] - 1) % 256
     elif cmd == ".":
-        out = chr(s.tape[s.dptr])
-        sys.stdout.write(chr(s.tape[s.dptr]))
+        io.stdout.write(chr(s.tape[s.dptr]))
     elif cmd == ",":
-        ch = sys.stdin.read(1)
+        ch = io.stdin.read(1)
         s.tape[s.dptr] = ord(ch) if ch else 0
     elif cmd == "[":
         if s.tape[s.dptr] == 0:
@@ -61,21 +55,15 @@ def step(s : State, program):
         if s.tape[s.dptr] != 0:
             s.iptr = move_backward(program, s.iptr)
 
-    validate(s)
-    ensure_tape(s)
-
     s.iptr += 1
 
-    return out
-
-def step_in_debugger(program: str, s : State):
+def step_in_debugger(program: str, s : State, io):
     s.iptr = 0
-    out = ""
     should_continue = False
     while s.iptr < len(program):
         command = input(f"{s.iptr} ({program[s.iptr]}) {s.tape[:5]} @ ")
         if should_continue or command == "s":
-            out += step(s, program)
+            step(s, program, io)
         elif command == "p":
             print(f">>[{s.iptr}] {program[s.iptr]} dptr: {s.dptr} tape:{s.tape[:5]}")
         elif command == "c":
@@ -88,17 +76,13 @@ def step_in_debugger(program: str, s : State):
 
     if should_continue:
         while s.iptr < len(program):
-            out += step(s, program)
-
-    return out
+            step(s, program)
 
 
-def step_until_end(program : str, s : State):
+def step_until_end(program : str, s : State, io):
     s.iptr = 0
-    out = ""
     while s.iptr < len(program):
-        out += step(s, program)
-    return out
+        step(s, program, io)
 
 def run_repl(debug):
     state = State()
@@ -108,16 +92,14 @@ def run_repl(debug):
             return
         print(f"running: '{prog}'")
         if debug:
-            out = step_in_debugger(prog, state)
+            step_in_debugger(prog, state, sys)
         else:
-            out = step_until_end(prog, state)
+            step_until_end(prog, state, sys)
         print(f"tape: [{state.tape[:10]}")
-        if out is not None:
-            print(f"output: '{out}'")
 
 def run_normal(prog):
    state = State()
-   out = step_until_end(prog, state)
+   out = step_until_end(prog, state, sys)
    print(f"tape: [{state.tape[:10]}")
    print(f"output: '{out}'")
 
