@@ -1,3 +1,4 @@
+import io
 import sys
 
 def find_matching_bracket(program, ptr, direction):
@@ -133,6 +134,36 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+class FakeIO:
+    def __init__(self, input_str=""):
+        self.stdin = io.StringIO(input_str)
+        self.stdout = io.StringIO()
+
+def run_with_io(program, input_str=""):
+    state = State()
+    fake = FakeIO(input_str)
+    step_until_end(program, state, fake)
+    return fake.stdout.getvalue(), state
+
+def test_hello_world():
+    HELLO = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
+    output, _ = run_with_io(HELLO)
+    assert output == "Hello World!\n"
+
+def test_cat():
+    # cat program: read char, loop while nonzero: print, read next
+    CAT = ",[.,]"
+    output, _ = run_with_io(CAT, "abcdef")
+    assert output == "abcdef"
+
+def test_input_deterministic():
+    # add two input bytes and output the sum (for small values)
+    # read A, read B into next cell, add B to A, output A
+    ADD = ",>,<[->+<]>."
+    output, state = run_with_io(ADD, "\x03\x05")
+    assert output == "\x08"
+    assert state.tape[1] == 8
 
 def test_move_forward():
     import pytest
