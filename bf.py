@@ -1,5 +1,7 @@
 import io
 import sys
+import dataclasses
+from enum import Flag
 
 def find_matching_bracket(program, ptr, direction):
     open_bracket = "[" if direction == 1 else "]"
@@ -30,7 +32,7 @@ class State:
         self.dptr = 0  # data pointer into 'self.tape'
         self.tape = [0] * 1000 # TODO handle dynamic size
 
-def step(s : State, program, io):
+def step(s : State, program, io_handle):
     cmd = program[s.iptr]
     if cmd == ">":
         s.dptr += 1
@@ -45,9 +47,9 @@ def step(s : State, program, io):
     elif cmd == "-":
         s.tape[s.dptr] = (s.tape[s.dptr] - 1) % 256
     elif cmd == ".":
-        io.stdout.write(chr(s.tape[s.dptr]))
+        io_handle.stdout.write(chr(s.tape[s.dptr]))
     elif cmd == ",":
-        ch = io.stdin.read(1)
+        ch = io_handle.stdin.read(1)
         s.tape[s.dptr] = ord(ch) if ch else 0
     elif cmd == "[":
         if s.tape[s.dptr] == 0:
@@ -58,13 +60,13 @@ def step(s : State, program, io):
 
     s.iptr += 1
 
-def step_in_debugger(program: str, s : State, io):
+def step_in_debugger(program: str, s : State, io_handle):
     s.iptr = 0
     should_continue = False
     while s.iptr < len(program):
         command = input(f"{s.iptr} ({program[s.iptr]}) {s.tape[:5]} @ ")
         if should_continue or command == "s":
-            step(s, program, io)
+            step(s, program, io_handle)
         elif command == "p":
             print(f">>[{s.iptr}] {program[s.iptr]} dptr: {s.dptr} tape:{s.tape[:5]}")
         elif command == "c":
@@ -98,37 +100,46 @@ def run_repl(debug):
             step_until_end(prog, state, sys)
         print(f"tape: [{state.tape[:10]}")
 
-def run_normal(prog):
+def run(prog):
    state = State()
    out = step_until_end(prog, state, sys)
    print(f"tape: [{state.tape[:10]}")
    print(f"output: '{out}'")
 
+@dataclasses.dataclass
+class ArgRepl:
+    debug : bool
+
+@dataclasses.dataclass
+class ArgFile:
+    filepath : str
+
+Arg = ArgRepl | ArgFile | None
 
 def main():
-    HELLO = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
-    mode = "normal"
-    debug = False
-    prog = ""
+
+    arg = None
     if  "-r" in sys.argv:
-        mode = "repl"
-    elif "-d" in sys.argv:
-        debug = True
+        arg = ArgRepl(debug=("-d" in sys.argv))
     elif "-f" in sys.argv:
         idx = sys.argv.index("-f")
-        filepath = sys.argv[idx + 1]
-        with open(filepath) as f:
-            prog = f.read()
-            run_normal(prog)
-            return
+        if idx + 1 < len(sys.argv):
+            arg = ArgFile(filepath=sys.argv[idx + 1])
+
     try:
-        if mode == "repl":
-            run_repl(debug)
-        else:
-            run_normal(HELLO)
+        match arg:
+            case ArgRepl(debug):
+                    run_repl(debug)
+            case ArgFile(filepath):
+                with open(filepath) as f:
+                    prog = f.read()
+                    run(prog)
+            case None:
+                print("""usage: bf.py
+        -f <filepath> Run a bf file.
+        -r [-d] Run REPL, with optional debug flag to interpret an expression in a debugger.""")
     except KeyboardInterrupt:
         pass
-
 
 
 if __name__ == "__main__":
@@ -140,7 +151,7 @@ class FakeIO:
         self.stdin = io.StringIO(input_str)
         self.stdout = io.StringIO()
 
-def run_with_io(program, input_str=""):
+def run_with_fake_io(program, input_str=""):
     state = State()
     fake = FakeIO(input_str)
     step_until_end(program, state, fake)
@@ -148,20 +159,20 @@ def run_with_io(program, input_str=""):
 
 def test_hello_world():
     HELLO = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
-    output, _ = run_with_io(HELLO)
+    output, _ = run_with_fake_io(HELLO)
     assert output == "Hello World!\n"
 
 def test_cat():
     # cat program: read char, loop while nonzero: print, read next
     CAT = ",[.,]"
-    output, _ = run_with_io(CAT, "abcdef")
+    output, _ = run_with_fake_io(CAT, "abcdef")
     assert output == "abcdef"
 
 def test_input_deterministic():
     # add two input bytes and output the sum (for small values)
     # read A, read B into next cell, add B to A, output A
     ADD = ",>,<[->+<]>."
-    output, state = run_with_io(ADD, "\x03\x05")
+    output, state = run_with_fake_io(ADD, "\x03\x05")
     assert output == "\x08"
     assert state.tape[1] == 8
 
