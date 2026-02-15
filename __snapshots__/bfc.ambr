@@ -37,6 +37,39 @@
       .zero 30000
   '''
 # ---
+# name: test_echo.1
+  '''
+  section .text
+  global _start
+  _start:
+      mov r12, tape
+      xor rax, rax
+      xor rdi, rdi
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+  L_start_1:
+      cmp byte [r12], 0
+      je L_end_1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      xor rax, rax
+      xor rdi, rdi
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      jmp L_start_1
+  L_end_1:
+      mov rax, 60
+      xor rdi, rdi
+      syscall
+  section .data
+  tape: times 30000 db 0
+  '''
+# ---
 # name: test_hello
   '''
   .section __TEXT,__text,regular,pure_instructions
@@ -342,5 +375,185 @@
   .align 3
   _tape:
       .zero 30000
+  '''
+# ---
+# name: test_hello.1
+  '''
+  section .text
+  global _start
+  _start:
+      mov r12, tape
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+  L_start_1:
+      cmp byte [r12], 0
+      je L_end_1
+      add r12, 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+  L_start_2:
+      cmp byte [r12], 0
+      je L_end_2
+      add r12, 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add r12, 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add r12, 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add r12, 1
+      add byte [r12], 1
+      add r12, -1
+      add r12, -1
+      add r12, -1
+      add r12, -1
+      add byte [r12], -1
+      jmp L_start_2
+  L_end_2:
+      add r12, 1
+      add byte [r12], 1
+      add r12, 1
+      add byte [r12], 1
+      add r12, 1
+      add byte [r12], -1
+      add r12, 1
+      add r12, 1
+      add byte [r12], 1
+  L_start_3:
+      cmp byte [r12], 0
+      je L_end_3
+      add r12, -1
+      jmp L_start_3
+  L_end_3:
+      add r12, -1
+      add byte [r12], -1
+      jmp L_start_1
+  L_end_1:
+      add r12, 1
+      add r12, 1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add r12, 1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add r12, 1
+      add r12, 1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add r12, -1
+      add byte [r12], -1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add r12, -1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add byte [r12], 1
+      add byte [r12], 1
+      add byte [r12], 1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      add byte [r12], -1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add r12, 1
+      add r12, 1
+      add byte [r12], 1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      add r12, 1
+      add byte [r12], 1
+      add byte [r12], 1
+      mov rax, 1
+      mov rdi, 1
+      mov rsi, r12
+      mov rdx, 1
+      syscall
+      mov rax, 60
+      xor rdi, rdi
+      syscall
+  section .data
+  tape: times 30000 db 0
   '''
 # ---
