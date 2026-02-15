@@ -102,9 +102,7 @@ def run_repl(debug):
 
 def run(prog):
    state = State()
-   out = step_until_end(prog, state, sys)
-   print(f"tape: [{state.tape[:10]}")
-   print(f"output: '{out}'")
+   step_until_end(prog, state, sys)
 
 @dataclasses.dataclass
 class ArgRepl:
