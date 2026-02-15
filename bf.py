@@ -1,7 +1,6 @@
 import dataclasses
 import io
 import sys
-from enum import Flag
 
 
 def find_matching_bracket(program, ptr, direction):
@@ -130,10 +129,8 @@ def main():
     arg = None
     if "-r" in sys.argv:
         arg = ArgRepl(debug=("-d" in sys.argv))
-    elif "-f" in sys.argv:
-        idx = sys.argv.index("-f")
-        if idx + 1 < len(sys.argv):
-            arg = ArgFile(filepath=sys.argv[idx + 1])
+    elif len(sys.argv) == 2:
+        arg = ArgFile(filepath=sys.argv[1])
 
     try:
         match arg:
@@ -145,8 +142,8 @@ def main():
                     run(prog)
             case None:
                 print("""usage: bf.py
-        -f <filepath> Run a bf file.
-        -r [-d] Run REPL, with optional debug flag to interpret an expression in a debugger.""")
+        -r [-d] Run REPL, with optional debug flag to interpret an expression in a debugger.
+        <filepath> Run a bf file.""")
     except KeyboardInterrupt:
         pass
 
