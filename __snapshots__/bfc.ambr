@@ -1,0 +1,346 @@
+# serializer version: 1
+# name: test_echo
+  '''
+  .section __TEXT,__text,regular,pure_instructions
+  .global _main
+  .align 2
+  _main:
+      stp x29, x30, [sp, #-16]!
+      adrp x19, _tape@PAGE
+      add x19, x19, _tape@PAGEOFF
+      mov x0, #0
+      mov x1, x19
+      mov x2, #1
+      mov x16, #3
+      svc #0x80
+  L_start_1:
+      ldrb w0, [x19]
+      cbz w0, L_end_1
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      mov x0, #0
+      mov x1, x19
+      mov x2, #1
+      mov x16, #3
+      svc #0x80
+      b L_start_1
+  L_end_1:
+      mov x0, #0
+      ldp x29, x30, [sp], #16
+      ret
+  .section __DATA,__data
+  .align 3
+  _tape:
+      .zero 30000
+  '''
+# ---
+# name: test_hello
+  '''
+  .section __TEXT,__text,regular,pure_instructions
+  .global _main
+  .align 2
+  _main:
+      stp x29, x30, [sp, #-16]!
+      adrp x19, _tape@PAGE
+      add x19, x19, _tape@PAGEOFF
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+  L_start_1:
+      ldrb w0, [x19]
+      cbz w0, L_end_1
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+  L_start_2:
+      ldrb w0, [x19]
+      cbz w0, L_end_2
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      sub x19, x19, #1
+      sub x19, x19, #1
+      sub x19, x19, #1
+      sub x19, x19, #1
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      b L_start_2
+  L_end_2:
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      add x19, x19, #1
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      add x19, x19, #1
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+  L_start_3:
+      ldrb w0, [x19]
+      cbz w0, L_end_3
+      sub x19, x19, #1
+      b L_start_3
+  L_end_3:
+      sub x19, x19, #1
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      b L_start_1
+  L_end_1:
+      add x19, x19, #1
+      add x19, x19, #1
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      add x19, x19, #1
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      add x19, x19, #1
+      add x19, x19, #1
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      sub x19, x19, #1
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      sub x19, x19, #1
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      sub w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      add x19, x19, #1
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      ldrb w0, [x19]
+      add w0, w0, #1
+      strb w0, [x19]
+      mov x0, #1
+      mov x1, x19
+      mov x2, #1
+      mov x16, #4
+      svc #0x80
+      mov x0, #0
+      ldp x29, x30, [sp], #16
+      ret
+  .section __DATA,__data
+  .align 3
+  _tape:
+      .zero 30000
+  '''
+# ---
