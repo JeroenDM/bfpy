@@ -28,6 +28,9 @@ class GetChar(Node):
 class PutChar(Node):
     pass
 
+class SetZero(Node):
+    pass
+
 def compile_to_ir(code):
     """Convert BF string to initial IR list."""
     code = "".join([c for c in code if c in "><+-.,[]"])
@@ -67,6 +70,19 @@ def fold_actions(nodes):
         i += 1
     return optimized
 
+def detect_patterns(nodes):
+    """Replaces [-] with SetZero."""
+    optimized = []
+    for node in nodes:
+        match node:
+            case Loop([Add(-1)]):
+                optimized.append(SetZero())
+            case Loop(body):
+                optimized.append(Loop(detect_patterns(body)))
+            case other:
+                optimized.append(other)
+    return optimized
+
 def indent(s):
     if s.startswith("L_"):
         return s
@@ -103,6 +119,8 @@ class ARM64_macOS:
                     lines += [f"L_start_{label}:", "ldrb w0, [x19]", f"cbz w0, L_end_{label}"]
                     lines += self.generate_body(body)
                     lines += [f"b L_start_{label}", f"L_end_{label}:"]
+                case SetZero():
+                    lines += ["strb wzr, [x19]"]
         return lines
 
     def generate(self, ir):
@@ -168,6 +186,8 @@ class X86_64_Linux:
                     lines += [f"L_start_{label}:", "cmp byte [r12], 0", f"je L_end_{label}"]
                     lines += self.generate_body(body)
                     lines += [f"jmp L_start_{label}", f"L_end_{label}:"]
+                case SetZero():
+                    lines += ["mov byte [r12], 0"]
         return lines
 
     def generate(self, ir):
@@ -198,6 +218,7 @@ def compile(source_code, platform):
     # Generate intermediate representation that we can optimize.
     ir = compile_to_ir(code)
     ir = fold_actions(ir)
+    ir = detect_patterns(ir)
 
     if platform == "arm64-macos":
         backend = ARM64_macOS()

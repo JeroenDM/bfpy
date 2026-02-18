@@ -80,83 +80,35 @@
       adrp x19, _tape@PAGE
       add x19, x19, _tape@PAGEOFF
       ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #8
       strb w0, [x19]
   L_start_1:
       ldrb w0, [x19]
       cbz w0, L_end_1
       add x19, x19, #1
       ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #4
       strb w0, [x19]
   L_start_2:
       ldrb w0, [x19]
       cbz w0, L_end_2
       add x19, x19, #1
       ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #2
       strb w0, [x19]
+      add x19, x19, #1
       ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #3
+      strb w0, [x19]
+      add x19, x19, #1
+      ldrb w0, [x19]
+      add w0, w0, #3
       strb w0, [x19]
       add x19, x19, #1
       ldrb w0, [x19]
       add w0, w0, #1
       strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      add x19, x19, #1
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      add x19, x19, #1
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      sub x19, x19, #1
-      sub x19, x19, #1
-      sub x19, x19, #1
-      sub x19, x19, #1
+      sub x19, x19, #4
       ldrb w0, [x19]
       sub w0, w0, #1
       strb w0, [x19]
@@ -174,8 +126,7 @@
       ldrb w0, [x19]
       sub w0, w0, #1
       strb w0, [x19]
-      add x19, x19, #1
-      add x19, x19, #1
+      add x19, x19, #2
       ldrb w0, [x19]
       add w0, w0, #1
       strb w0, [x19]
@@ -191,8 +142,7 @@
       strb w0, [x19]
       b L_start_1
   L_end_1:
-      add x19, x19, #1
-      add x19, x19, #1
+      add x19, x19, #2
       mov x0, #1
       mov x1, x19
       mov x2, #1
@@ -200,13 +150,7 @@
       svc #0x80
       add x19, x19, #1
       ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
+      sub w0, w0, #3
       strb w0, [x19]
       mov x0, #1
       mov x1, x19
@@ -214,25 +158,7 @@
       mov x16, #4
       svc #0x80
       ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #7
       strb w0, [x19]
       mov x0, #1
       mov x1, x19
@@ -245,21 +171,14 @@
       mov x16, #4
       svc #0x80
       ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #3
       strb w0, [x19]
       mov x0, #1
       mov x1, x19
       mov x2, #1
       mov x16, #4
       svc #0x80
-      add x19, x19, #1
-      add x19, x19, #1
+      add x19, x19, #2
       mov x0, #1
       mov x1, x19
       mov x2, #1
@@ -281,13 +200,7 @@
       mov x16, #4
       svc #0x80
       ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #3
       strb w0, [x19]
       mov x0, #1
       mov x1, x19
@@ -295,22 +208,7 @@
       mov x16, #4
       svc #0x80
       ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
+      sub w0, w0, #6
       strb w0, [x19]
       mov x0, #1
       mov x1, x19
@@ -318,36 +216,14 @@
       mov x16, #4
       svc #0x80
       ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      sub w0, w0, #1
+      sub w0, w0, #8
       strb w0, [x19]
       mov x0, #1
       mov x1, x19
       mov x2, #1
       mov x16, #4
       svc #0x80
-      add x19, x19, #1
-      add x19, x19, #1
+      add x19, x19, #2
       ldrb w0, [x19]
       add w0, w0, #1
       strb w0, [x19]
@@ -358,10 +234,7 @@
       svc #0x80
       add x19, x19, #1
       ldrb w0, [x19]
-      add w0, w0, #1
-      strb w0, [x19]
-      ldrb w0, [x19]
-      add w0, w0, #1
+      add w0, w0, #2
       strb w0, [x19]
       mov x0, #1
       mov x1, x19
@@ -383,42 +256,24 @@
   global _start
   _start:
       mov r12, tape
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
+      add byte [r12], 8
   L_start_1:
       cmp byte [r12], 0
       je L_end_1
       add r12, 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
+      add byte [r12], 4
   L_start_2:
       cmp byte [r12], 0
       je L_end_2
       add r12, 1
-      add byte [r12], 1
-      add byte [r12], 1
+      add byte [r12], 2
+      add r12, 1
+      add byte [r12], 3
+      add r12, 1
+      add byte [r12], 3
       add r12, 1
       add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add r12, 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add r12, 1
-      add byte [r12], 1
-      add r12, -1
-      add r12, -1
-      add r12, -1
-      add r12, -1
+      add r12, -4
       add byte [r12], -1
       jmp L_start_2
   L_end_2:
@@ -428,8 +283,7 @@
       add byte [r12], 1
       add r12, 1
       add byte [r12], -1
-      add r12, 1
-      add r12, 1
+      add r12, 2
       add byte [r12], 1
   L_start_3:
       cmp byte [r12], 0
@@ -441,29 +295,20 @@
       add byte [r12], -1
       jmp L_start_1
   L_end_1:
-      add r12, 1
-      add r12, 1
+      add r12, 2
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
       mov rdx, 1
       syscall
       add r12, 1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
+      add byte [r12], -3
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
       mov rdx, 1
       syscall
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
+      add byte [r12], 7
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
@@ -474,16 +319,13 @@
       mov rsi, r12
       mov rdx, 1
       syscall
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
+      add byte [r12], 3
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
       mov rdx, 1
       syscall
-      add r12, 1
-      add r12, 1
+      add r12, 2
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
@@ -502,40 +344,25 @@
       mov rsi, r12
       mov rdx, 1
       syscall
-      add byte [r12], 1
-      add byte [r12], 1
-      add byte [r12], 1
+      add byte [r12], 3
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
       mov rdx, 1
       syscall
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
+      add byte [r12], -6
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
       mov rdx, 1
       syscall
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
-      add byte [r12], -1
+      add byte [r12], -8
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
       mov rdx, 1
       syscall
-      add r12, 1
-      add r12, 1
+      add r12, 2
       add byte [r12], 1
       mov rax, 1
       mov rdi, 1
@@ -543,8 +370,7 @@
       mov rdx, 1
       syscall
       add r12, 1
-      add byte [r12], 1
-      add byte [r12], 1
+      add byte [r12], 2
       mov rax, 1
       mov rdi, 1
       mov rsi, r12
