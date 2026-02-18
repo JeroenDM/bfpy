@@ -16,7 +16,7 @@ class Add:
 @dataclasses.dataclass
 class Move(Node):
     """Move the data pointer to the right (>0) or left (<0)."""
-    steps : int
+    x : int
 
 @dataclasses.dataclass
 class Loop(Node):
@@ -44,6 +44,28 @@ def compile_to_ir(code):
             inner = stack.pop()
             stack[-1].append(Loop(inner))
     return stack[0]
+
+def fold_actions(nodes):
+    """Combines +++ or >>> into single IR nodes."""
+    if not nodes:
+        return []
+    optimized = []
+    i = 0
+    while i < len(nodes):
+        match nodes[i]:
+            case Add(v) | Move(v) as current:
+                count = v
+                while i + 1 < len(nodes) and type(nodes[i+1]) == type(current):
+                    count += nodes[i+1].x
+                    i += 1
+                if count != 0:
+                    optimized.append(type(current)(count))
+            case Loop(body):
+                optimized.append(Loop(fold_actions(body)))
+            case other:
+                optimized.append(other)
+        i += 1
+    return optimized
 
 def indent(s):
     if s.startswith("L_"):
@@ -175,6 +197,7 @@ def compile(source_code, platform):
 
     # Generate intermediate representation that we can optimize.
     ir = compile_to_ir(code)
+    ir = fold_actions(ir)
 
     if platform == "arm64-macos":
         backend = ARM64_macOS()
